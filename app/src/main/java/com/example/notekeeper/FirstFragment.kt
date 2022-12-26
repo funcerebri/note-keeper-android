@@ -29,16 +29,6 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-
-        val dm = DataManager()
-        val ctx = requireContext()
-        val adapterCourses = ArrayAdapter<CourseInfo>(
-            ctx,
-            layout.simple_spinner_item,
-            dm.courses.values.toList())
-        adapterCourses.setDropDownViewResource(layout.simple_spinner_dropdown_item)
-        binding.spinnerCourse.adapter = adapterCourses
-
         return binding.root
     }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.example.notekeeper.databinding.FragmentSecondBinding
 
@@ -25,8 +26,16 @@ class SecondFragment : Fragment() {
     ): View? {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
-        return binding.root
 
+        val dm = DataManager()
+        val ctx = requireContext()
+        val adapterCourses = ArrayAdapter<CourseInfo>(
+            ctx,
+            android.R.layout.simple_spinner_item,
+            dm.courses.values.toList())
+        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCourse.adapter = adapterCourses
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
