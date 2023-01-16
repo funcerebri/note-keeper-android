@@ -28,15 +28,13 @@ class SecondFragment : Fragment() {
             // We use a String here, but any type that can be put in a Bundle is supported
             notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?:
                             bundle.getInt(NOTE_POSITION)
-            
+
+            if(notePosition != POSITION_NOT_SET)
+                displayNote()
         }
 
-        if(notePosition != POSITION_NOT_SET)
-            displayNote()
-        else {
-            DataManager.notes.add(NoteInfo())
+        if(notePosition == POSITION_NOT_SET)
             notePosition = DataManager.notes.lastIndex
-        }
     }
 
     override fun onCreateView(
