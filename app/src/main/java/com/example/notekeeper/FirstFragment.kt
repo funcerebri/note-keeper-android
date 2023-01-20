@@ -1,6 +1,7 @@
 package com.example.notekeeper
 
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.notekeeper.databinding.FragmentFirstBinding
 
 /**
@@ -29,24 +31,12 @@ class FirstFragment : Fragment() {
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
-        binding.listNotes.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            DataManager.notes)
-
-        binding.listNotes.setOnItemClickListener { parent, view, position, id ->
-            // Use the Kotlin extension in the fragment-ktx artifact
-            setFragmentResult("SELECT_ITEM", bundleOf(NOTE_POSITION to position))
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
-
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
-
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+        val ctx = requireContext()
+        binding.listItems.layoutManager = LinearLayoutManager(context)
+        binding.listItems.adapter = NoteRecycleAdapter(requireContext(), DataManager.notes)
 
         return binding.root
     }
@@ -58,7 +48,7 @@ class FirstFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (binding.listNotes.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
+        //(binding.listNotes.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
