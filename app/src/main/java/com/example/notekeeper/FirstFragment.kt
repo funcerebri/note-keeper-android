@@ -34,7 +34,6 @@ class FirstFragment : Fragment() {
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
-        val ctx = requireContext()
         binding.listItems.layoutManager = LinearLayoutManager(context)
         binding.listItems.adapter = NoteRecycleAdapter(requireContext(), DataManager.notes)
 
@@ -48,7 +47,7 @@ class FirstFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        //(binding.listNotes.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
+        binding.listItems.adapter?.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

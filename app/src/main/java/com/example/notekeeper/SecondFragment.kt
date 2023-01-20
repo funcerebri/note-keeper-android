@@ -23,18 +23,6 @@ class SecondFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        setFragmentResultListener("SELECT_ITEM") { requestKey, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported
-            notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?:
-                            bundle.getInt(NOTE_POSITION)
-
-            if(notePosition != POSITION_NOT_SET)
-                displayNote()
-        }
-
-        if(notePosition == POSITION_NOT_SET)
-            notePosition = DataManager.notes.lastIndex
     }
 
     override fun onCreateView(
@@ -50,6 +38,15 @@ class SecondFragment : Fragment() {
             DataManager.courses.values.toList())
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerCourse.adapter = adapterCourses
+
+        notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?:
+                arguments?.getInt(NOTE_POSITION, POSITION_NOT_SET)!!
+
+        if(notePosition != POSITION_NOT_SET)
+            displayNote()
+
+        if(notePosition == POSITION_NOT_SET)
+            notePosition = DataManager.notes.lastIndex
 
         return binding.root
     }
@@ -113,14 +110,6 @@ class SecondFragment : Fragment() {
         note.text = binding.textNoteText.text.toString()
         note.title = binding.textNoteTitle.text.toString()
         note.course = binding.spinnerCourse.selectedItem as CourseInfo
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
     }
 
     override fun onDestroyView() {
